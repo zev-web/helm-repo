@@ -6,7 +6,7 @@ fullnameOverride: ""
 namespace: blog
 
 #Pod副本数
-replicas: 1
+replicas: 3
 
 #Pod镜像
 image:
