@@ -1,0 +1,19 @@
+{{- if and .Values.persistence.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.persistence.claimName | default ( include "wordpress.fullname" .) }}
+  namespace: {{ .Values.namespace | default "default" }}
+  labels:
+    {{- include "wordpress.labels" . | nindent 4 }}
+spec:
+  storageClassName: {{ .Values.persistence.storageClassName | default "nfs-csi" | quote }}
+  accessModes:
+  - {{ .Values.persistence.accessModes | default "ReadWriteMany" | quote }}
+  resources:
+    limits:
+      storage: {{ .Values.persistence.storage | default "20G" | quote }}
+    requests:
+      storage: {{ .Values.persistence.storage | default "20G" | quote }}
+
+{{- end }}

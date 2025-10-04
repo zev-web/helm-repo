@@ -1,0 +1,122 @@
+#名称
+nameOverride: ""
+fullnameOverride: ""
+
+#名称空间
+namespace: blog
+
+#Pod副本数
+replicas: 1
+
+#Pod镜像
+image:
+  name: wordpress
+  tag: php8.1-apache
+imagePullPolicy: ""
+
+#service
+service:
+  name: tcp-80
+  port: 80
+  containerPort: 80
+  type: ClusterIP
+  nodePort: ""
+
+ingress:
+  enabled: true
+  ingressClassName: "nginx"
+  host: "kod.zeven1992.com"
+  #ingress的注解
+  annotations: {}
+   # kubernetes.io/tls-acme: "true"
+
+tls:
+  enabled: true
+  certpath: "certs/kod.zeven1992.com.pem"
+  keypath: "certs/kod.zeven1992.com.key"
+  
+
+#Pod的持久化
+persistence:
+  enabled: true
+  claimName: wordpress-pvc
+  #使用的存储类
+  storageClassNaame: "nfs-csi"
+  #pvc的访问模式
+  accessModes: "ReadWriteMany"
+  #pvc的大小
+  storage: "10Gi"
+
+#Pod的env
+env:
+- name: WORDPRESS_DB_HOST
+  value: mysql.blog.svc.cluster.local
+- name: WORDPRESS_DB_USER
+  value: wpuser
+- name: WORDPRESS_DB_PASSWORD
+  value: zeven.com
+- name: WORDPRESS_DB_NAME
+  value: wpdb
+
+
+#Pod的资源限制
+resources:
+  requests:
+    memory: 200Mi
+  limits:
+    memory: 200Mi
+
+
+#节点选择器
+nodeSelector: {}
+#  disktype: ssd
+
+#Pod的亲和性
+affinity: {}
+#  podAffinity:
+#    preferredDuringSchedulingIgnoredDuringExecution:
+#      - labelSelector:
+#          matchExpressions:
+#            - key: app
+#              operator: In
+#              values: ["web"]
+#        topologyKey: kubernetes.io/hostname
+
+# Pod容忍度
+tolerations: {}
+#  - key: "node-role.kubernetes.io/control-plane"
+#    operator: "Exists"
+#    effect: "NoSchedule"
+#  - key: "node-role.kubernetes.io/master"
+#    operator: "Exists"
+#    effect: "NoSchedule"
+
+
+#Pod探针
+livenessProbe:
+#  httpGet:
+#    port: 80
+#    path: /index.html
+#  failureThreshold: 3
+#  initialDelaySeconds: 10
+#  periodSeconds: 1
+#  successThreshold: 1
+#  timeoutSeconds: 1
+readinessProbe:
+#  httpGet:
+#    port: 80
+#    path: /index.html
+#  failureThreshold: 3
+#  initialDelaySeconds: 10
+#  periodSeconds: 1
+#  successThreshold: 1
+#  timeoutSeconds: 1
+startupProbe:
+#  httpGet:
+#    port: 80
+#    path: /index.html
+#  failureThreshold: 3
+#  initialDelaySeconds: 10
+#  periodSeconds: 1
+#  successThreshold: 1
+#  timeoutSeconds: 1
