@@ -1,15 +1,9 @@
-{{/*
-Expand the name of the chart.
-*/}}
+{{/* wwordpress的chart名称 */}}
 {{- define "wordpress.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
-{{/*
-Create a default fully qualified app name.
-We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-If release name contains chart name it will be used as a full name.
-*/}}
+{{/* wordpress应用名称 */}}
 {{- define "wordpress.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
@@ -23,40 +17,23 @@ If release name contains chart name it will be used as a full name.
 {{- end }}
 {{- end }}
 
-{{/*
-Create chart name and version as used by the chart label.
-*/}}
+{{/* wwordpress的chart名称和版本  */}}
 {{- define "wordpress.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
-{{/*
-Common labels
-*/}}
+{{/* wordpress的标签 */}}
 {{- define "wordpress.labels" -}}
 helm.sh/chart: {{ include "wordpress.chart" . }}
 {{ include "wordpress.selectorLabels" . }}
-{{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-{{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
-{{/*
-Selector labels
-*/}}
+{{/* wordpress的标签选择器 */}}
 {{- define "wordpress.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "wordpress.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
-{{/*
-Create the name of the service account to use
-*/}}
-{{- define "wordpress.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "wordpress.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
-{{- end }}
+
